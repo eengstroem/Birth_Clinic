@@ -19,11 +19,10 @@ namespace Library.Models
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
 
-        public BirthRoom Room { get; set; }
         public ICollection<Clinician> AssociatedClinicians { get; set; }
 
         [Required]
-        public Child ChildToBeBorn { get; set; }
+        public ICollection<FamilyMember> ChildrenToBeBorn { get; set; }
 
         [Required]
         public FamilyMember Mother { get; set; }

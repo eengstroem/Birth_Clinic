@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace Library.Models.FamilyMembers
 {
+    public enum FamilyMemberType
+    {
+        FATHER,
+        MOTHER,
+        CHILD,
+        RELATIVE
+    }
+
     public class FamilyMember
     {
         public int FamilyMemberId { get; set; }
@@ -13,5 +21,9 @@ namespace Library.Models.FamilyMembers
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
+
+        public Birth AssociatedBirth { get; set; }
+
+        public FamilyMemberType MemberType { get; set; }
     }
 }

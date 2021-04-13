@@ -5,6 +5,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Library.Models.Rooms
 {
+    public enum RoomType
+    {
+        MATERNITY,
+        BIRTH,
+        REST
+    }
+
     public class Room
     {
         // This can also be used as the actual room number.
@@ -12,7 +19,8 @@ namespace Library.Models.Rooms
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RoomId { get; set; }
 
-        public Reservation Reservation { get; set; }
+        public RoomType RoomType { get; set; }
+        public ICollection<Reservation> CurrentReservations { get; set; }
 
         //optional
         public ICollection<Clinician> AssociatedClinicians { get; set; }

@@ -14,6 +14,7 @@ namespace Library.Models
         public DateTime EndTime { get;  set; }
         public Room ReservedRoom { get;  set; }
         public Birth AssociatedBirth { get;  set; }
+        public bool IsEndedEarly { get; set; }
 
     }
 }
