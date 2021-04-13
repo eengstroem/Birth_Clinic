@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace Library.Display
 {
@@ -38,8 +38,11 @@ namespace Library.Display
             
         }
 
-        public void ForceReset()
+        public void ForceReset(string errorMessage)
         {
+            Console.Clear();
+            Console.WriteLine(errorMessage);
+            Thread.Sleep(1000);
             Console.Clear();
             Console.WriteLine("Hello, please type the corresponding letter to choose one of the following options:");
             Console.WriteLine("A: Show planned births for the coming three days");

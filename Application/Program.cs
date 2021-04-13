@@ -53,17 +53,13 @@ namespace Application
                                 Disp.Reset();
                                 break;
                             default:
-                                Console.WriteLine("Unacceptable input");
-                                Thread.Sleep(1000);
-                                Disp.ForceReset();
+                                Disp.ForceReset("Unacceptable input");
                                 break;
                         }
                         break;
 
                     default:
-                        Console.WriteLine("Unacceptable input");
-                        Thread.Sleep(1000);
-                        Disp.ForceReset();
+                        Disp.ForceReset("Unacceptable input");
                         break;
                 }
             }
