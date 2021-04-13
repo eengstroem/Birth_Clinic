@@ -5,32 +5,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Library.Models.Clinicians;
 
 namespace Library.Models.Rooms
 {
     public class Room
     {
+        // This can also be used as the actual room number.
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int BirthId { get; set; }
+        public int RoomId { get; set; }
 
-        [Required]
-        [DataType(DataType.Date)]
-        public DateTime BirthDate { get; set; }
+        public Reservation Reservation { get; set; }
 
-        public BirthRoom BirthRoom { get; set; }
+        //optional
         public ICollection<Clinician> AssociatedClinicians { get; set; }
 
-        [Required]
-        public Child ChildToBeBorn { get; set; }
 
-        [Required]
-        public FamilyMember Mother { get; set; }
-
-        //optional
-        public FamilyMember Father { get; set; }
-
-        //optional
-        public ICollection<FamilyMember> Relatives { get; set; }
     }
 }

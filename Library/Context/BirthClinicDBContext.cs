@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Library.Models.Rooms;
+using Library.Models.Clinicians;
 
 namespace Library.Models
 {

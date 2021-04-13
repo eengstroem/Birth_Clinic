@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Library.Models.FamilyMembers;
 
-namespace Library.Models
+namespace Library.Models.Rooms
 {
-    public class BirthRoom
+    public class MaternityRoom : Room
     {
-        public int BirthRoomId { get; set; }
-        public int RoomNumber { get; set; }
+
+        //optional, can hold mother, father, child and others
+        public ICollection<FamilyMember> FamilyMembers { get; set; }
 
 
     }
