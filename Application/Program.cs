@@ -27,15 +27,15 @@ namespace Application
                         break;
                     case 'B':
                         Console.WriteLine("case 2");
-
+                        Disp.Reset();
                         break;
                     case 'C':
                         Console.WriteLine("case 3");
-
+                        Disp.Reset();
                         break;
                     case 'D':
                         Console.WriteLine("case 4");
-
+                        Disp.Reset();
                         break;
                     case 'E':
 
