@@ -6,9 +6,6 @@ namespace Library.Models.Clinicians
     public class Clinician
     {
         public int FacultyId { get; set; }
-
-        //public BirthRoom Room { get; set; }
-
         public string FirstName { get;  set; }
         public string LastName { get;  set; }
         public Room AssignedRoom { get; set; }
