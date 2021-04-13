@@ -11,6 +11,42 @@ namespace Library.Display
 
         public Display()
         {
+            Console.WriteLine("Loading.");
+            Console.Beep(660, 100);
+            Thread.Sleep(150);
+            Console.SetCursorPosition(0, 0);
+            ClearCurrentConsoleLine();
+            Console.WriteLine("Loading..");
+            Console.Beep(660, 100);
+            Thread.Sleep(300);
+            Console.SetCursorPosition(0, 0);
+            ClearCurrentConsoleLine();
+            Console.WriteLine("Loading...");
+            Console.Beep(660, 100);
+            Thread.Sleep(300);
+            Console.SetCursorPosition(0, 0);
+            ClearCurrentConsoleLine();
+            Console.WriteLine("Loading..");
+            Console.Beep(510, 100);
+            Thread.Sleep(100);
+            Console.SetCursorPosition(0, 0);
+            ClearCurrentConsoleLine();
+            Console.WriteLine("Loading.");
+            Console.Beep(660, 100);
+            Thread.Sleep(300);
+            Console.SetCursorPosition(0, 0);
+            ClearCurrentConsoleLine();
+            Console.WriteLine("Loading..");
+            Console.Beep(770, 100);
+            Thread.Sleep(550);
+            Console.SetCursorPosition(0, 0);
+            ClearCurrentConsoleLine();
+            Console.WriteLine("Loading...");
+            Console.Beep(380, 100);
+            Thread.Sleep(575);
+            Console.SetCursorPosition(0, 0);
+            ClearCurrentConsoleLine();
+
             Console.WriteLine("Hello, please type the corresponding letter to choose one of the following options:");
             Console.WriteLine("A: Show planned births for the coming three days");
             Console.WriteLine("B: Show clinicians, birth rooms, maternity rooms and rest rooms available at the clinic for the next five days");

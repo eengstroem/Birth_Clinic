@@ -9,23 +9,6 @@ namespace Application
         static void Main(string[] args)
         {
             Display Disp = new();
-            Console.Beep(660,100);
-            Thread.Sleep(150);
-
-            Console.Beep(660, 100);
-            Thread.Sleep(300);
-
-            Console.Beep(660, 100);
-            Thread.Sleep(300);
-
-            Console.Beep(510, 100);
-            Thread.Sleep(100);
-            Console.Beep(660, 100);
-            Thread.Sleep(300);
-            Console.Beep(770, 100);
-            Thread.Sleep(550);
-            Console.Beep(380, 100);
-            Thread.Sleep(575);
 
             while (true)
             {
