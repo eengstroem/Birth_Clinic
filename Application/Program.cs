@@ -46,11 +46,11 @@ namespace Application
                         {
                             case 1:
                                 Console.WriteLine("case 5");
-
+                                Disp.Reset();
                                 break;
                             case 2:
                                 Console.WriteLine("case 6");
-
+                                Disp.Reset();
                                 break;
                             default:
                                 Console.WriteLine("Unacceptable input");
