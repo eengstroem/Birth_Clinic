@@ -21,10 +21,7 @@ namespace Library.Models
         public DbSet<FamilyMember> FamilyMembers { get; set; }
 
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<BirthRoom> BirthRooms { get; set; }
-        public DbSet<RestRoom> RestRooms { get; set; }
-        public DbSet<MaternityRoom> MaternityRooms { get; set; }
-
+      
         public DbSet<Reservation> Reservations { get; set; }
 
         public DbSet<Clinician> Clinicians { get; set; }
