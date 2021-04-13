@@ -1,12 +1,9 @@
-﻿using System;
+﻿using Library.Models.Clinicians;
+using Library.Models.Rooms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Library.Models.Rooms;
-using Library.Models.Clinicians;
 
 namespace Library.Models
 {

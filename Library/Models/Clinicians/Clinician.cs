@@ -1,9 +1,5 @@
-﻿using System;
+﻿using Library.Models.Rooms;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Library.Models.Rooms;
 
 namespace Library.Models.Clinicians
 {
@@ -15,7 +11,6 @@ namespace Library.Models.Clinicians
 
         public string FirstName { get;  set; }
         public string LastName { get;  set; }
-        public ICollection<Birth> AssignedBirths { get; set; }
         public Room AssignedRoom { get; set; }
     }
 }

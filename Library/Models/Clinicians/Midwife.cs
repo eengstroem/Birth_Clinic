@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Library.Models.Clinicians
 {
-    class Midwife
+    public class Midwife : Clinician
     {
+        public ICollection<Birth> AssignedBirths { get; set; }
     }
 }

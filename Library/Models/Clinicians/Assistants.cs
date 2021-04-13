@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Library.Models.Clinicians
 {
-    class Assistants
+    public class Assistants : Clinician
     {
     }
 }
