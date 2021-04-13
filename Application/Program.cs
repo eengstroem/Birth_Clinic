@@ -57,7 +57,10 @@ namespace Application
                                 break;
                         }
                         break;
-
+                    case 'M':
+                        Disp.marioFunny();
+                        Disp.ForceReset("");
+                        break;
                     default:
                         Disp.ForceReset("Unacceptable input");
                         break;
