@@ -88,7 +88,7 @@ namespace Library.Display
                 }
                 catch (IndexOutOfRangeException)
                 {
-                    Console.WriteLine("{0} is not an acceptable input!\nTry again:", line);
+                    Console.WriteLine("Unacceptable input!\nTry again:");
                     line = ' ';
 
                 }
