@@ -28,7 +28,7 @@ namespace Library.Display
                 line = Console.ReadKey().Key;
             }
             Console.Clear();
-            Console.Write("a");
+            Console.Write("A");
             Console.WriteLine("Hello, please type the corresponding letter to choose one of the following options:");
             Console.WriteLine("A: Show planned births for the coming three days");
             Console.WriteLine("B: Show clinicians, birth rooms, maternity rooms and rest rooms available at the clinic for the next five days");
