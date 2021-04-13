@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Library.Models.Rooms;
 using Library.Models.Clinicians;
+using Library.Models.FamilyMembers;
 
 namespace Library.Models
 {
