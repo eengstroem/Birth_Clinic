@@ -118,7 +118,6 @@ namespace Library.DataGenerator
 
         public static IEnumerable<Clinician> FindAvailableClinicians(DbSet<Clinician> clinicians, Birth Birth, ClinicianType Role)
         {
-            DateTime StartTime = Birth.BirthDate, EndTime = Birth.BirthDate;
             int RequiredDelta = 0;
             int AllowedOccurences = 0;
 
@@ -155,9 +154,11 @@ namespace Library.DataGenerator
                     //search for conflicts
                     clinician.Role == Role &&
                     clinician.AssignedBirths.Where(b =>
-                     (b.BirthDate - StartTime).TotalMinutes >= RequiredDelta * 60).Count() == AllowedOccurences
+                     (b.BirthDate - Birth.BirthDate).TotalMinutes >= RequiredDelta * 60).Count() == AllowedOccurences
 
                  );
+
+
         }
 
         public static bool CreateReservations(BirthClinicDbContext Context, Birth Birth, out Reservation[] reservations)
