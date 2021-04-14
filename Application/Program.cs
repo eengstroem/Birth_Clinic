@@ -36,9 +36,6 @@ namespace Application
                     case 'A':
                         Disp.Case1(Context);
                         Disp.Reset();
-                        
-
-
                         break;
                     case 'B':
                         Disp.Case2(Context);
@@ -53,7 +50,6 @@ namespace Application
                         Disp.Reset();
                         break;
                     case 'E':
-
                         Disp.Case5(Context);
                         Disp.Reset();
                         break;

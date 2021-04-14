@@ -182,12 +182,14 @@ namespace Library.Display
         }
         public void Case1(BirthClinicDbContext context)
         {
+            Console.Clear();
             DateTime FilterDate = DateTime.Now.AddDays(3);
             List<Birth> BirthList = context.Births.Where(c => c.BirthDate < FilterDate).ToList();
             
             
             Console.WriteLine("Please enter a number between 1 and " + BirthList.Count + ", to view the specific birth's details.");
             int Choice = ReadAndParseInt32FromDisplay();
+            Console.Clear();
             Birth B = BirthList.ElementAt(Choice - 1);
             foreach (var c in B.ChildrenToBeBorn)
             {
@@ -239,6 +241,7 @@ namespace Library.Display
 
         public void Case3(BirthClinicDbContext context)
         {
+            Console.Clear();
             DateTime FilterDate = DateTime.Now;
             List<Reservation> ReservationList = context.Reservations.Where(r =>
             r.ReservedRoom.RoomType == RoomType.BIRTH
@@ -284,6 +287,7 @@ namespace Library.Display
         }
         public void Case4(BirthClinicDbContext context)
         {
+            Console.Clear();
             DateTime FilterDate = DateTime.Now;
             List<Reservation> ReservationList = context.Reservations.Where(r =>
             (r.ReservedRoom.RoomType == RoomType.MATERNITY || r.ReservedRoom.RoomType == RoomType.REST)
@@ -319,6 +323,7 @@ namespace Library.Display
         }
         public void Case5(BirthClinicDbContext context)
         {
+            Console.Clear();
             List<Birth> BirthList = context.Births.ToList();
             int i = 0;
             foreach(var b in BirthList)
@@ -330,6 +335,7 @@ namespace Library.Display
             Console.WriteLine("Please enter a number according to the Journal you wish to read.");
             int Choice = ReadAndParseInt32FromDisplay();
             Birth B = BirthList.ElementAt(Choice - 1);
+            Console.Clear();
 
             foreach (var c in B.ChildrenToBeBorn)
             {
