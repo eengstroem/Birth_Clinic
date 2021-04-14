@@ -1,25 +1,20 @@
 ﻿using Library.Models.Births;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Library.Models.FamilyMembers
 {
-    public enum FamilyMemberType
-    {
-        FATHER,
-        MOTHER,
-        CHILD,
-        RELATIVE
-    }
 
-    public class FamilyMember
+
+    public abstract class FamilyMember
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int FamilyMemberId { get; set; }
 
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
-        public Birth AssociatedBirth { get; set; }
-
-        public FamilyMemberType MemberType { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using Library.DataGenerator;
 using Library.Display;
 using System;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Sqlite;
+using Microsoft.SqlServer;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO;
 
@@ -89,8 +89,8 @@ namespace Application
             SC.AddDbContext<BirthClinicDbContext>(options =>
             {
                 var dataSource = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "DebtBook.db");
-                options.UseSqlite($"Data Source={dataSource};");
-            });
+                options.UseSqlServer("server=localhost,1433; User Id=sa; Password=password_123; database=myDb; trusted_connection=false;");
+        });
         }
     }
 }

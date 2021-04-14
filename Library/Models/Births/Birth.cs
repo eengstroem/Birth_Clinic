@@ -21,16 +21,19 @@ namespace Library.Models.Births
         public ICollection<Clinician> AssociatedClinicians { get; set; }
 
         [Required]
-        public ICollection<FamilyMember> ChildrenToBeBorn { get; set; }
+        public ICollection<Child> ChildrenToBeBorn { get; set; }
 
         [Required]
-        public FamilyMember Mother { get; set; }
+        public Mother Mother { get; set; }
+        public int MotherForeignKey { get; set; }
+
 
         //optional
-        public FamilyMember Father { get; set; }
+        public Father Father { get; set; }
+        public int FatherForeignKey { get; set; }
 
         //optional
-        public ICollection<FamilyMember> Relatives { get; set; }
+        public ICollection<Relative> Relatives { get; set; }
 
     }
 }

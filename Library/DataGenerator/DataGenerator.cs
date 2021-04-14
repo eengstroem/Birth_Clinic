@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Library.Factory.FamilyMembers.FamilyMemberFactory;
 
 namespace Library.DataGenerator
 {
@@ -78,13 +79,16 @@ namespace Library.DataGenerator
             //Adding 136 Births since there are 5000 births per year (13.6 per day), and we want to simulate 10 days of fake data.
             for (int i = 0; i < 136; i++)
             {
+                Console.WriteLine(i);
                 var B = BirthFactory.CreateFakeBirth();
                 if (!CreateReservations(Context, B, out List<Reservation> reservations))
                 {
+                    Console.WriteLine("REE SCHEDULING CONFLICT ON RESERVATION");
                     continue;
                 }
                 if (!AddClinicians(Context, B, out List<Clinician> Clinicians))
                 {
+                    Console.WriteLine("REE SCHEDULING CONFLICT ON CLINICIAN");
                     continue;
                 }
 
@@ -93,7 +97,7 @@ namespace Library.DataGenerator
                 B.AssociatedClinicians = Clinicians;
                 B.Mother = AddMother();
                 Random rand = new();
-                if (rand.Next(1,10) > 1)
+                if (rand.Next(1, 10) > 1)
                 {
                     B.Father = AddFather();
                 }
@@ -112,7 +116,7 @@ namespace Library.DataGenerator
             return Rooms.First(room =>
 
                     //search for conflicts
-                    room.RoomType == Type && !room.CurrentReservations.Any(res => 
+                    room.RoomType == Type && !room.CurrentReservations.Any(res =>
                     (StartTime >= res.StartTime && StartTime <= res.EndTime)
                     ||
                     (EndTime >= res.StartTime && EndTime <= res.EndTime)
@@ -155,12 +159,10 @@ namespace Library.DataGenerator
             }
 
             return clinicians.Where(clinician =>
-
                     //search for conflicts
                     clinician.Role == Role &&
-                    clinician.AssignedBirths.Where(b =>
-                     (b.BirthDate - Birth.BirthDate).TotalMinutes >= RequiredDelta * 60).Count() == AllowedOccurences
-
+                    clinician.AssignedBirths.AsEnumerable().Where(b =>
+                     EF.Functions.DateDiffMinute(b.BirthDate, Birth.BirthDate) >= RequiredDelta * 60).AsEnumerable().Count() <= AllowedOccurences
                  );
 
 
@@ -282,44 +284,44 @@ namespace Library.DataGenerator
             return true;
         }
 
-        public static FamilyMember AddMother()
+        public static Mother AddMother()
         {
-            return FamilyMemberFactory.CreateFakeFamilyMember(FamilyMemberType.MOTHER);
+            return (Mother)FamilyMemberFactory.CreateFakeFamilyMember(FamilyMemberType.MOTHER);
         }
 
-        public static FamilyMember AddFather()
+        public static Father AddFather()
         {
-            return FamilyMemberFactory.CreateFakeFamilyMember(FamilyMemberType.FATHER);
+            return (Father)CreateFakeFamilyMember(FamilyMemberType.FATHER);
         }
 
-        public static List<FamilyMember> AddRelatives()
+        public static List<Relative> AddRelatives()
         {
             Random rand = new();
-            List<FamilyMember> FamilyMembers = new();
-            for (int i = rand.Next(1,10); i == 0; i--)
+            List<Relative> relatives = new();
+            for (int i = rand.Next(1, 10); i == 0; i--)
             {
-                FamilyMembers.Add(FamilyMemberFactory.CreateFakeFamilyMember(FamilyMemberType.RELATIVE));
+                relatives.Add((Relative)CreateFakeFamilyMember(FamilyMemberType.RELATIVE));
             }
-            return FamilyMembers;
+            return relatives;
         }
 
-        public static List<FamilyMember> AddChildrenToBorn()
+        public static List<Child> AddChildrenToBorn()
         {
             Random rand = new();
             double weight = rand.NextDouble();
 
-            List<FamilyMember> Children = new();
+            List<Child> Children = new();
 
-            Children.Add(FamilyMemberFactory.CreateFakeFamilyMember(FamilyMemberType.CHILD));
+            Children.Add((Child)CreateFakeFamilyMember(FamilyMemberType.CHILD));
             if (weight > 0.75)
             {
-                Children.Add(FamilyMemberFactory.CreateFakeFamilyMember(FamilyMemberType.CHILD));
-                if(weight > 0.85)
+                Children.Add((Child)CreateFakeFamilyMember(FamilyMemberType.CHILD));
+                if (weight > 0.85)
                 {
-                    Children.Add(FamilyMemberFactory.CreateFakeFamilyMember(FamilyMemberType.CHILD));
+                    Children.Add((Child)CreateFakeFamilyMember(FamilyMemberType.CHILD));
                     if (weight > 0.95)
                     {
-                        Children.Add(FamilyMemberFactory.CreateFakeFamilyMember(FamilyMemberType.CHILD));
+                        Children.Add((Child)CreateFakeFamilyMember(FamilyMemberType.CHILD));
                     }
                 }
             }

@@ -20,11 +20,12 @@ namespace Library.Models.Rooms
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RoomId { get; set; }
 
+        [Required]
         public RoomType RoomType { get; set; }
-        public ICollection<Reservation> CurrentReservations { get; set; }
 
         //optional
-        public ICollection<Clinician> AssociatedClinicians { get; set; }
+        public ICollection<Reservation> CurrentReservations { get; set; }
+
 
 
     }
