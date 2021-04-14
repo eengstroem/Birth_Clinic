@@ -81,7 +81,6 @@ namespace Library.DataGenerator
                 var B = BirthFactory.CreateFakeBirth();
                 Reservation[] reservations;
                 List<Clinician> Clinicians;
-                List<FamilyMember> relatives;
                 if (!CreateReservations(Context, B, out reservations))
                 {
                     continue;
