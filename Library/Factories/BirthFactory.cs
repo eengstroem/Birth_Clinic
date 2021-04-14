@@ -1,9 +1,10 @@
-﻿using Library.Models.Clinicians;
+﻿using Library.Models.Births;
+using Library.Models.Clinicians;
 using Library.Models.FamilyMembers;
 using System;
 using System.Collections.Generic;
 
-namespace Library.Models.Births
+namespace Library.Factory.Births
 {
     public class BirthFactory
     {

@@ -1,11 +1,8 @@
-﻿using System;
+﻿using Library.Models.Births;
+using Library.Models.Clinicians;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Library.Models.Births;
 
-namespace Library.Models.Clinicians
+namespace Library.Factory.Clinicians
 {
     class ClinicianFactory
     {

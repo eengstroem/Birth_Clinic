@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Library.Models.Clinicians;
 using Library.Models.Reservations;
-using Library.Models.Clinicians;
+using Library.Models.Rooms;
+using System.Collections.Generic;
 
-namespace Library.Models.Rooms
+namespace Library.Factory.Rooms
 {
     class RoomFactory
     {

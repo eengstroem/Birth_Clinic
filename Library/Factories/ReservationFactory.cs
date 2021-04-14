@@ -1,8 +1,9 @@
 ﻿using Library.Models.Births;
+using Library.Models.Reservations;
 using Library.Models.Rooms;
 using System;
 
-namespace Library.Models.Reservations
+namespace Library.Factory.Reservations
 {
     public class ReservationFactory
     {

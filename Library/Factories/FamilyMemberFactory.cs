@@ -1,6 +1,7 @@
 ﻿using Library.Models.Births;
+using Library.Models.FamilyMembers;
 
-namespace Library.Models.FamilyMembers
+namespace Library.Factory.FamilyMembers
 {
     class FamilyMemberFactory
     {
