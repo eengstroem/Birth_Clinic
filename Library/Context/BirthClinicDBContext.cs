@@ -73,8 +73,8 @@ namespace Library.Context
 
             modelBuilder.Entity<Reservation>()
                 .HasOne(c => c.AssociatedBirth)
-                .WithOne()
-                .HasForeignKey<Reservation>(r => r.BirthId)
+                .WithMany()
+                .HasForeignKey(c => c.BirthId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Reservation>()

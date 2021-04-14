@@ -30,7 +30,7 @@ namespace Library.Models.Births
 
         //optional
         public Father Father { get; set; }
-        public int FatherForeignKey { get; set; }
+        public int? FatherForeignKey { get; set; }
 
         //optional
         public ICollection<Relative> Relatives { get; set; }

@@ -24,7 +24,7 @@ namespace Library.Models.Reservations
         [Required]
         public Birth AssociatedBirth { get;  set; }
 
-        public int BirthId { get; set; }
+        public int? BirthId { get; set; }
 
         [Required]
         public bool IsEndedEarly { get; set; } = false;
