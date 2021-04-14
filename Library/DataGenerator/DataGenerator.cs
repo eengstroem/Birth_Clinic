@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using static Library.Factory.FamilyMembers.FamilyMemberFactory;
+using Library.Display;
 
 namespace Library.DataGenerator
 {
@@ -77,7 +78,7 @@ namespace Library.DataGenerator
         public static void GenerateData(BirthClinicDbContext Context)
         {
             //Adding 136 Births since there are 5000 births per year (13.6 per day), and we want to simulate 10 days of fake data.
-            for (int i = 0; i < 40; i++)
+            for (int i = 0; i < 20; i++)
             {
                 var B = BirthFactory.CreateFakeBirth();
                 if (!CreateReservations(Context, B, out List<Reservation> reservations))
@@ -103,6 +104,8 @@ namespace Library.DataGenerator
                 B.Relatives = AddRelatives();
 
                 B.ChildrenToBeBorn = AddChildrenToBorn();
+
+                B.IsEnded = false;
 
                 Context.Births.Add(B);
                 Context.SaveChanges();
@@ -331,6 +334,103 @@ namespace Library.DataGenerator
                 }
             }
             return Children;
+        }
+        public static bool CreateBirth(BirthClinicDbContext Context)
+        {
+            var B = BirthFactory.CreateFakeBirth();
+            if (!CreateReservations(Context, B, out List<Reservation> reservations))
+            {
+                Console.WriteLine("We are out of rooms");
+                return false;
+            }
+            if (!AddClinicians(Context, B, out List<Clinician> Clinicians))
+            {
+                return false;
+            }
+
+            Context.AddRange(reservations);
+
+            B.AssociatedClinicians = Clinicians;
+            B.Mother = AddMother();
+            Random rand = new();
+            if (rand.Next(1, 10) > 1)
+            {
+                B.Father = AddFather();
+            }
+            B.Relatives = AddRelatives();
+
+            B.ChildrenToBeBorn = AddChildrenToBorn();
+            B.IsEnded = false;
+            Context.Births.Add(B);
+            Context.SaveChanges();
+            return true;
+        }
+        public static bool CreateReservation(BirthClinicDbContext Context, RoomType Type)
+        {
+            
+            List<Birth> BirthList = Context.Births.ToList();
+
+            Console.WriteLine("Please choose a Birth to add this reservation to.");
+            Console.WriteLine("Pick between " + 1 + " and " + BirthList.Count + ".");
+
+            string line = "";
+            int Choice = -1;
+            while (Choice == -1)
+            {
+                try
+                {
+                    line = Console.ReadLine();
+                    Choice = Int32.Parse(line);
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("{0} is not a valid integer!\nTry again:", line);
+                    Choice = -1;
+
+                }
+            }
+            var B = BirthList.ElementAt(Choice-1);
+            var StartTime = B.BirthDate;
+            var EndTime = B.BirthDate;
+            switch (Type)
+            {
+                case RoomType.BIRTH:
+                    StartTime = B.BirthDate.AddHours(-12);
+                    EndTime = B.BirthDate;
+                    break;
+                case RoomType.MATERNITY:
+                    StartTime = B.BirthDate.AddHours(-132);
+                    EndTime = B.BirthDate.AddHours(-12);
+                    break;
+                case RoomType.REST:
+                    StartTime = B.BirthDate;
+                    EndTime = B.BirthDate.AddHours(4);
+                    break;
+            }
+
+            var AvailableRoom = FindAvailableRooms(Context.Rooms, StartTime, EndTime, Type);
+
+            //Not possible to create a birth at the given time. Find another  hospital.
+            if (AvailableRoom == null)
+            {
+                return false;
+            }
+            else //There are available rooms of all 3 categories! Nice!
+            {
+                //create reservations
+                var reservation = new Reservation
+                {
+                    StartTime = StartTime,
+                    EndTime = EndTime,
+                    ReservedRoom = AvailableRoom,
+                    AssociatedBirth = B
+                };
+
+                Context.Reservations.Add(reservation);
+                Context.SaveChanges();
+                return true;
+            }
+
         }
     }
 }

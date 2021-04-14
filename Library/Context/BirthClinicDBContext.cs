@@ -62,7 +62,6 @@ namespace Library.Context
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.NoAction);
 
-
             modelBuilder.Entity<Birth>()
                 .HasMany<Relative>(c => c.Relatives)
                 .WithOne(f => f.AssociatedBirth)
