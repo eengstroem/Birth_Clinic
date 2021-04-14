@@ -26,3 +26,12 @@ Below, a quick guide will walk you through set-up and interaction with the solut
 Please note that running the program generates the dummy data for the database. 
 This can result in some births not being planned within the next 5 days, as the days generated are set randomly. 
 To combat this, delete the database and tables, and run the program again.
+
+Use this command to do it quick-and-easy:
+USE master;
+GO
+ALTER DATABASE myDb
+SET SINGLE_USER 
+WITH ROLLBACK IMMEDIATE;
+GO
+DROP DATABASE myDb;
