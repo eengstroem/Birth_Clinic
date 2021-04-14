@@ -15,7 +15,7 @@ namespace Library.Factory.Births
             var faker = new Faker("en");
             var o = new Birth()
             {
-                BirthDate = faker.Date.Between(DateTime.Now, DateTime.Now.AddDays(30)),                
+                BirthDate = faker.Date.Between(DateTime.Now, DateTime.Now.AddDays(10)),                
             };
             return o;
         }

@@ -6,7 +6,7 @@ namespace Library.Factory.FamilyMembers
     class FamilyMemberFactory
     {
         
-        public FamilyMember CreateFakeFamilyMember(FamilyMemberType type)
+        public static FamilyMember CreateFakeFamilyMember(FamilyMemberType type)
         {
 
             var faker = new Faker("en");

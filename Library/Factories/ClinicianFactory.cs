@@ -8,7 +8,7 @@ namespace Library.Factory.Clinicians
     class ClinicianFactory
     {
 
-        public Clinician CreateFakeClinician(ClinicianType type)
+        public static Clinician CreateFakeClinician(ClinicianType type)
         {
 
             var faker = new Faker("en");

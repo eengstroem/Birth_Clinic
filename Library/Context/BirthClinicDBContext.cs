@@ -5,12 +5,12 @@ using Library.Models.Reservations;
 using Library.Models.Rooms;
 using Microsoft.EntityFrameworkCore;
 
-namespace Library.Models
+namespace Library.Context
 {
-    public class BirthClinicDBContext : DbContext
+    public class BirthClinicDbContext : DbContext
     {
 
-        public BirthClinicDBContext(DbContextOptions<BirthClinicDBContext> options) : base(options)
+        public BirthClinicDbContext(DbContextOptions<BirthClinicDbContext> options) : base(options)
         {
             Database.EnsureCreated();
         }

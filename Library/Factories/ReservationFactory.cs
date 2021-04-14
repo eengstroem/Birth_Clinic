@@ -12,10 +12,11 @@ namespace Library.Factory.Reservations
 
             DateTime EndTime = StartTime;
 
+            //we have no idea how birth works. Labour takes 12 hours we guess
             switch (RoomType)
             {
                 case RoomType.BIRTH:
-                    EndTime = StartTime.AddHours(4);
+                    EndTime = StartTime.AddHours(12);
                     break;
                 case RoomType.REST:
                     EndTime = StartTime.AddHours(4);
