@@ -1,12 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Library.Models.Rooms;
+﻿using Library.Models.Births;
 using Library.Models.Clinicians;
 using Library.Models.FamilyMembers;
+using Library.Models.Reservations;
+using Library.Models.Rooms;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library.Models
 {

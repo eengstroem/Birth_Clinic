@@ -1,6 +1,5 @@
-﻿using System;
-using System.Threading;
-using Library.Display;
+﻿using Library.Display;
+using System;
 
 namespace Application
 {

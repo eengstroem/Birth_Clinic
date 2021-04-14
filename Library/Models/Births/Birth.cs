@@ -1,12 +1,11 @@
 ﻿using Library.Models.Clinicians;
-using Library.Models.Rooms;
+using Library.Models.FamilyMembers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Library.Models.FamilyMembers;
 
-namespace Library.Models
+namespace Library.Models.Births
 {
     public class Birth
     {
