@@ -1,19 +1,22 @@
-﻿using Library.Models.Births;
+﻿using Bogus;
 using Library.Models.FamilyMembers;
 
 namespace Library.Factory.FamilyMembers
 {
     class FamilyMemberFactory
     {
-        public FamilyMember CreateFamilyMember(string FirstName, string LastName, Birth AssociatedBirth, FamilyMemberType MemberType)
+        
+        public FamilyMember CreateFakeFamilyMember(FamilyMemberType type)
         {
-            FamilyMember f = new();
-            f.FirstName = FirstName;
-            f.LastName = LastName;
-            f.AssociatedBirth = AssociatedBirth;
-            f.MemberType = MemberType;
 
-            return f;
+            var faker = new Faker("en");
+            var o = new FamilyMember()
+            {
+                FirstName = faker.Name.FirstName(),
+                LastName = faker.Name.LastName(),
+                MemberType = type
+            };
+            return o;
         }
     }
 }
