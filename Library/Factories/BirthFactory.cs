@@ -1,4 +1,5 @@
-﻿using Library.Models.Births;
+﻿using Bogus;
+using Library.Models.Births;
 using Library.Models.Clinicians;
 using Library.Models.FamilyMembers;
 using System;
@@ -8,52 +9,15 @@ namespace Library.Factory.Births
 {
     public class BirthFactory
     {
-        public Birth CreateBirth(DateTime BirthDate, ICollection<Clinician> AssociatedClinicians, ICollection<FamilyMember> ChildrenToBeBorn, FamilyMember Mother)
+        public static Birth CreateFakeBirth()
         {
-            Birth b = new();
-            b.BirthDate = BirthDate;
-            b.AssociatedClinicians = AssociatedClinicians;
-            b.ChildrenToBeBorn = ChildrenToBeBorn;
-            b.Mother = Mother;
 
-            return b;
-        }
-
-        public Birth CreateBirth(DateTime BirthDate, ICollection<Clinician> AssociatedClinicians, ICollection<FamilyMember> ChildrenToBeBorn, FamilyMember Mother, FamilyMember Father)
-        {
-            Birth b = new();
-            b.BirthDate = BirthDate;
-            b.AssociatedClinicians = AssociatedClinicians;
-            b.ChildrenToBeBorn = ChildrenToBeBorn;
-            b.Mother = Mother;
-            b.Father = Father;
-
-            return b;
-        }
-
-        public Birth createBirth(DateTime BirthDate, ICollection<Clinician> AssociatedClinicians, ICollection<FamilyMember> ChildrenToBeBorn, FamilyMember Mother, ICollection<FamilyMember> Relatives)
-        {
-            Birth b = new();
-            b.BirthDate = BirthDate;
-            b.AssociatedClinicians = AssociatedClinicians;
-            b.ChildrenToBeBorn = ChildrenToBeBorn;
-            b.Mother = Mother;
-            b.Relatives = Relatives;
-
-            return b;
-        }
-
-        public Birth createBirth(DateTime BirthDate, ICollection<Clinician> AssociatedClinicians, ICollection<FamilyMember> ChildrenToBeBorn, FamilyMember Mother, FamilyMember Father, ICollection<FamilyMember> Relatives)
-        {
-            Birth b = new();
-            b.BirthDate = BirthDate;
-            b.AssociatedClinicians = AssociatedClinicians;
-            b.ChildrenToBeBorn = ChildrenToBeBorn;
-            b.Mother = Mother;
-            b.Father = Father;
-            b.Relatives = Relatives;
-
-            return b;
+            var faker = new Faker("en");
+            var o = new Birth()
+            {
+                BirthDate = faker.Date.Between(DateTime.Now, DateTime.Now.AddDays(30)),                
+            };
+            return o;
         }
     }
 }

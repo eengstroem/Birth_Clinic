@@ -7,28 +7,32 @@ namespace Library.Factory.Reservations
 {
     public class ReservationFactory
     {
-        public Reservation CreateReservation(DateTime endtime, Room ReservedRoom, Birth AssosiatedBirth)
+        public static Reservation CreateFakeReservation(RoomType RoomType, DateTime StartTime)
         {
-            Reservation r = new();
-            r.StartTime = DateTime.Now;
-            r.EndTime = endtime;
-            r.ReservedRoom = ReservedRoom;
-            r.AssociatedBirth = AssosiatedBirth;
-            r.IsEndedEarly = false;
 
-            return r;
-        }
+            DateTime EndTime = StartTime;
 
-        public Reservation CreateReservation(DateTime starttime, DateTime endtime, Room ReservedRoom, Birth AssosiatedBirth)
-        {
-            Reservation r = new();
-            r.StartTime = starttime;
-            r.EndTime = endtime;
-            r.ReservedRoom = ReservedRoom;
-            r.AssociatedBirth = AssosiatedBirth;
-            r.IsEndedEarly = false;
+            switch (RoomType)
+            {
+                case RoomType.BIRTH:
+                    EndTime = StartTime.AddHours(4);
+                    break;
+                case RoomType.REST:
+                    EndTime = StartTime.AddHours(4);
+                    break;
+                case RoomType.MATERNITY:
+                    EndTime = StartTime.AddDays(5);
+                    break;
+            }
 
-            return r;
+            var o = new Reservation()
+            {
+                IsEndedEarly = false,
+                StartTime = StartTime,
+                EndTime = EndTime,
+            };
+
+            return o;
         }
     }
 }
