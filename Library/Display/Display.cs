@@ -220,8 +220,17 @@ namespace Library.Display
         }
         public void Case2(BirthClinicDbContext context)
         {
-            
+            DateTime FilterDate = DateTime.Now.AddDays(5);
+
+
+            List<Room> MaternityRooms = context.Rooms.Where(r => 
+            r.RoomType == RoomType.MATERNITY
+            &&
+            r.CurrentReservations.Where(res => res.EndTime < FilterDate).Count() > 0).ToList();
+
+
         }
+
         public void Case3(BirthClinicDbContext context)
         {
             DateTime FilterDate = DateTime.Now;
