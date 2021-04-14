@@ -1,21 +1,15 @@
-﻿using Bogus;
+﻿using Library.Context;
+using Library.Factory.Births;
+using Library.Factory.Clinicians;
+using Library.Factory.Rooms;
+using Library.Models.Births;
+using Library.Models.Clinicians;
+using Library.Models.Reservations;
+using Library.Models.Rooms;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Library.Models.FamilyMembers;
-using Library.Models.Births;
-using Library.Factory.Clinicians;
-using Library.Models.Clinicians;
-using Library.Models.Rooms;
-using Library.Factory.Rooms;
-using Library.Factory.Births;
-using Library.Models.Reservations;
-using Library.Context;
-using Library.Factory.Reservations;
-using Library.Models.Rooms;
-using Microsoft.EntityFrameworkCore;
 
 namespace Library.DataGenerator
 {
@@ -83,64 +77,33 @@ namespace Library.DataGenerator
             for (int i = 0; i < 136; i++)
             {
                 var B = BirthFactory.CreateFakeBirth();
-                var MaternityStartTime = B.BirthDate.AddHours(-132);
-                var MaternityEndTime = B.BirthDate.AddHours(-12);
-
-                var RestStartTime = B.BirthDate;
-                var RestEndTime = B.BirthDate.AddHours(4);
-
-                var BirthStartTime = B.BirthDate.AddHours(-12);
-                var BirthEndTime = B.BirthDate;
-
-                var AvailableMaternityRooms = FindAvailableRooms(Context.Rooms, MaternityStartTime, MaternityEndTime, RoomType.MATERNITY);
-                var AvailableBirthRooms = FindAvailableRooms(Context.Rooms, MaternityStartTime, MaternityEndTime, RoomType.BIRTH);
-                var AvailableRestRooms = FindAvailableRooms(Context.Rooms, MaternityStartTime, MaternityEndTime, RoomType.REST);
-
-                //Not possible to create a birth at the given time. Find another  hospital.
-                if (!AvailableBirthRooms.Any() || !AvailableMaternityRooms.Any() || !AvailableRestRooms.Any())
+                Reservation[] reservations;
+                List<Clinician> Clinicians;
+                if (!CreateReservations(Context, B, out reservations))
                 {
                     continue;
                 }
-                    else //There are available rooms of all 3 categories! Nice!
+                if (!AddClinicians(Context, B, out Clinicians))
                 {
-                    //create reservations
-                    var MaternityRes = new Reservation
-                    {
-                        StartTime = MaternityStartTime,
-                        EndTime = MaternityEndTime,
-                        ReservedRoom = AvailableMaternityRooms.First(),
-                        AssociatedBirth = B
-                    };
-
-                    var BirthRes = new Reservation
-                    {
-                        StartTime = BirthStartTime,
-                        EndTime = BirthEndTime,
-                        ReservedRoom = AvailableBirthRooms.First(),
-                        AssociatedBirth = B
-                    };
-
-                    var RestRes = new Reservation
-                    {
-                        StartTime = RestStartTime,
-                        EndTime = RestEndTime,
-                        ReservedRoom = AvailableRestRooms.First(),
-                        AssociatedBirth = B
-                    };
-
-                    Context.Reservations.AddRange(new Reservation[]{ MaternityRes, BirthRes, RestRes});
+                    continue;
                 }
+
+                Context.AddRange(reservations);
+
+                B.AssociatedClinicians.Concat(Clinicians);
+
+                Context.Births.Add(B);
             }
             Context.SaveChanges();
         }
 
         //TODO switch to single instead of where
-        public static IEnumerable<Room> FindAvailableRooms(DbSet<Room> Rooms, DateTime StartTime, DateTime EndTime, RoomType Type)
+        public static Room FindAvailableRooms(DbSet<Room> Rooms, DateTime StartTime, DateTime EndTime, RoomType Type)
         {
-            return Rooms.Where(room =>
+            return Rooms.First(room =>
 
                     //search for conflicts
-                    room.CurrentReservations.Where(res =>
+                    room.RoomType == Type && !room.CurrentReservations.Any(res =>
                     res.StartTime <= StartTime
                     ||
                     StartTime <= res.EndTime
@@ -149,10 +112,168 @@ namespace Library.DataGenerator
                     ||
                     EndTime <= res.EndTime
                     )//Only returns true if there are no conflicts
-                    .Count() == 0 && room.RoomType == Type
+
                  );
         }
+
+        public static IEnumerable<Clinician> FindAvailableClinicians(DbSet<Clinician> clinicians, Birth Birth, ClinicianType Role)
+        {
+            DateTime StartTime = Birth.BirthDate, EndTime = Birth.BirthDate;
+            int RequiredDelta = 0;
+            int AllowedOccurences = 0;
+
+            switch (Role)
+            {
+                case ClinicianType.DOCTOR:
+                    RequiredDelta = 12;
+                    AllowedOccurences = 0;
+                    break;
+                case ClinicianType.HEALTH_ASSISTANT:
+                    RequiredDelta = 4;
+                    AllowedOccurences = 0;
+
+                    break;
+                case ClinicianType.MIDWIFE:
+                    RequiredDelta = 120;
+                    AllowedOccurences = 8;
+
+                    break;
+                case ClinicianType.NURSE:
+                    RequiredDelta = 136;
+                    AllowedOccurences = 9;
+
+                    break;
+                case ClinicianType.SECRETARY:
+                    // Secretary only has to check in the birth, so she is freed up immediately, but still associated.
+                    AllowedOccurences = 1;
+
+                    break;
+            }
+
+            return clinicians.Where(clinician =>
+
+                    //search for conflicts
+                    clinician.Role == Role &&
+                    clinician.AssignedBirths.Where(b =>
+                     (b.BirthDate - StartTime).TotalMinutes >= RequiredDelta * 60).Count() == AllowedOccurences
+
+                 );
+        }
+
+        public static bool CreateReservations(BirthClinicDbContext Context, Birth Birth, out Reservation[] reservations)
+        {
+            var MaternityStartTime = Birth.BirthDate.AddHours(-132);
+            var MaternityEndTime = Birth.BirthDate.AddHours(-12);
+
+            var RestStartTime = Birth.BirthDate;
+            var RestEndTime = Birth.BirthDate.AddHours(4);
+
+            var BirthStartTime = Birth.BirthDate.AddHours(-12);
+            var BirthEndTime = Birth.BirthDate;
+
+            var AvailableMaternityRoom = FindAvailableRooms(Context.Rooms, MaternityStartTime, MaternityEndTime, RoomType.MATERNITY);
+            var AvailableBirthRoom = FindAvailableRooms(Context.Rooms, MaternityStartTime, MaternityEndTime, RoomType.BIRTH);
+            var AvailableRestRoom = FindAvailableRooms(Context.Rooms, MaternityStartTime, MaternityEndTime, RoomType.REST);
+
+            //Not possible to create a birth at the given time. Find another  hospital.
+            if (AvailableBirthRoom == null || AvailableMaternityRoom == null || AvailableRestRoom == null)
+            {
+                reservations = null;
+                return false;
+            }
+            else //There are available rooms of all 3 categories! Nice!
+            {
+                //create reservations
+                var MaternityRes = new Reservation
+                {
+                    StartTime = MaternityStartTime,
+                    EndTime = MaternityEndTime,
+                    ReservedRoom = AvailableMaternityRoom,
+                    AssociatedBirth = Birth
+                };
+
+                var BirthRes = new Reservation
+                {
+                    StartTime = BirthStartTime,
+                    EndTime = BirthEndTime,
+                    ReservedRoom = AvailableBirthRoom,
+                    AssociatedBirth = Birth
+                };
+
+                var RestRes = new Reservation
+                {
+                    StartTime = RestStartTime,
+                    EndTime = RestEndTime,
+                    ReservedRoom = AvailableRestRoom,
+                    AssociatedBirth = Birth
+                };
+
+                reservations = new Reservation[] { MaternityRes, BirthRes, RestRes };
+                return true;
+            }
+        }
+
+        public static bool AddClinicians(BirthClinicDbContext Context, Birth Birth, out List<Clinician> Clinicians)
+        {
+
+            Random Rand = new();
+            IEnumerable<Clinician> FoundClinicians;
+            Clinicians = new();
+
+            // Finds available Doctor and inserts one random available Doctor into output List.
+            FoundClinicians = FindAvailableClinicians(Context.Clinicians, Birth, ClinicianType.DOCTOR);
+            if (!FoundClinicians.Any())
+            {
+                return false;
+            }
+            Clinicians.Add(FoundClinicians.ElementAt(Rand.Next(0, FoundClinicians.Count())));
+
+
+            // Finds available Midwife and inserts one random available Midwife into output List.
+            FoundClinicians = FindAvailableClinicians(Context.Clinicians, Birth, ClinicianType.MIDWIFE);
+            if (!FoundClinicians.Any())
+            {
+                return false;
+            }
+            Clinicians.Add(FoundClinicians.ElementAt(Rand.Next(0, FoundClinicians.Count())));
+
+
+            // Finds available Nurse and inserts two random available Nurse into output List.
+            FoundClinicians = FindAvailableClinicians(Context.Clinicians, Birth, ClinicianType.NURSE);
+
+            if (FoundClinicians.Count() < 2)
+            {
+                return false;
+            }
+            int randresult = Rand.Next(0, FoundClinicians.Count());
+
+            if (randresult == FoundClinicians.Count())
+            {
+                randresult--;
+            }
+
+            Clinicians.Add(FoundClinicians.ElementAt(randresult));
+            Clinicians.Add(FoundClinicians.ElementAt(randresult++));
+
+
+            // Finds available Assistant and inserts two random available Assistant into output List.
+            FoundClinicians = FindAvailableClinicians(Context.Clinicians, Birth, ClinicianType.HEALTH_ASSISTANT);
+            if (!FoundClinicians.Any())
+            {
+                return false;
+            }
+            Clinicians.Add(FoundClinicians.ElementAt(Rand.Next(0, FoundClinicians.Count())));
+
+
+            // Finds available Secretary and inserts two random available Secretary into output List.
+            FoundClinicians = FindAvailableClinicians(Context.Clinicians, Birth, ClinicianType.SECRETARY);
+            if (!FoundClinicians.Any())
+            {
+                return false;
+            }
+            Clinicians.Add(FoundClinicians.ElementAt(Rand.Next(0, FoundClinicians.Count())));
+
+            return true;
+        }
     }
-
-
 }

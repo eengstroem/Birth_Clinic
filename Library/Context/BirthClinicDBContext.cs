@@ -59,7 +59,7 @@ namespace Library.Context
             modelBuilder.Entity<Reservation>()
                 .HasOne(c => c.AssociatedBirth)
                 .WithOne()
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Reservation>()
                 .HasOne(c => c.ReservedRoom)
