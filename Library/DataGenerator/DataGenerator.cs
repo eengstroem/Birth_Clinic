@@ -102,6 +102,8 @@ namespace Library.DataGenerator
                 }
                 B.Relatives = AddRelatives();
 
+                B.ChildrenToBeBorn = AddChildrenToBorn();
+
                 Context.Births.Add(B);
             }
             Context.SaveChanges();
@@ -307,8 +309,24 @@ namespace Library.DataGenerator
         public static List<FamilyMember> AddChildrenToBorn()
         {
             Random rand = new();
-            int wait = rand.Next(1, 100);
-            
+            double weight = rand.NextDouble();
+
+            List<FamilyMember> Children = new();
+
+            Children.Add(FamilyMemberFactory.CreateFakeFamilyMember(FamilyMemberType.CHILD));
+            if (weight > 0.75)
+            {
+                Children.Add(FamilyMemberFactory.CreateFakeFamilyMember(FamilyMemberType.CHILD));
+                if(weight > 0.85)
+                {
+                    Children.Add(FamilyMemberFactory.CreateFakeFamilyMember(FamilyMemberType.CHILD));
+                    if (weight > 0.95)
+                    {
+                        Children.Add(FamilyMemberFactory.CreateFakeFamilyMember(FamilyMemberType.CHILD));
+                    }
+                }
+            }
+            return Children;
         }
     }
 }
