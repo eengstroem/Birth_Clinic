@@ -8,7 +8,7 @@ namespace Library.Factory.Births
 {
     public class BirthFactory
     {
-        public Birth createBirth(DateTime BirthDate, ICollection<Clinician> AssociatedClinicians, ICollection<FamilyMember> ChildrenToBeBorn, FamilyMember Mother)
+        public Birth CreateBirth(DateTime BirthDate, ICollection<Clinician> AssociatedClinicians, ICollection<FamilyMember> ChildrenToBeBorn, FamilyMember Mother)
         {
             Birth b = new();
             b.BirthDate = BirthDate;
@@ -19,7 +19,7 @@ namespace Library.Factory.Births
             return b;
         }
 
-        public Birth createBirth(DateTime BirthDate, ICollection<Clinician> AssociatedClinicians, ICollection<FamilyMember> ChildrenToBeBorn, FamilyMember Mother, FamilyMember Father)
+        public Birth CreateBirth(DateTime BirthDate, ICollection<Clinician> AssociatedClinicians, ICollection<FamilyMember> ChildrenToBeBorn, FamilyMember Mother, FamilyMember Father)
         {
             Birth b = new();
             b.BirthDate = BirthDate;

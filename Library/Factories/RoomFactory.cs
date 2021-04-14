@@ -7,7 +7,7 @@ namespace Library.Factory.Rooms
 {
     class RoomFactory
     {
-        public Room createRoom(RoomType RoomType, ICollection<Reservation> CurrentReservations)
+        public Room CreateRoom(RoomType RoomType, ICollection<Reservation> CurrentReservations)
         {
             Room r = new();
             r.RoomType = RoomType;
@@ -16,7 +16,7 @@ namespace Library.Factory.Rooms
             return r;
         }
 
-        public Room createRoom(RoomType RoomType, ICollection<Reservation> CurrentReservations, ICollection<Clinician> AssociatedClinicians)
+        public Room CreateRoom(RoomType RoomType, ICollection<Reservation> CurrentReservations, ICollection<Clinician> AssociatedClinicians)
         {
             Room r = new();
             r.RoomType = RoomType;

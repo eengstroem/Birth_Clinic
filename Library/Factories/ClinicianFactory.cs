@@ -6,7 +6,7 @@ namespace Library.Factory.Clinicians
 {
     class ClinicianFactory
     {
-        public Clinician createClinician(string FirstName, string LastName, ICollection<Birth> AssignedBirths, ClinicianType Role)
+        public Clinician CreateClinician(string FirstName, string LastName, ICollection<Birth> AssignedBirths, ClinicianType Role)
         {
             Clinician c = new();
             c.FirstName = FirstName;

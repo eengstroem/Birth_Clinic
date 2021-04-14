@@ -5,7 +5,7 @@ namespace Library.Factory.FamilyMembers
 {
     class FamilyMemberFactory
     {
-        public FamilyMember createFamilyMember(string FirstName, string LastName, Birth AssociatedBirth, FamilyMemberType MemberType)
+        public FamilyMember CreateFamilyMember(string FirstName, string LastName, Birth AssociatedBirth, FamilyMemberType MemberType)
         {
             FamilyMember f = new();
             f.FirstName = FirstName;
