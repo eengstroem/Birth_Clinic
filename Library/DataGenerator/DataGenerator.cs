@@ -103,14 +103,10 @@ namespace Library.DataGenerator
             return Rooms.First(room =>
 
                     //search for conflicts
-                    room.RoomType == Type && !room.CurrentReservations.Any(res =>
-                    res.StartTime <= StartTime
+                    room.RoomType == Type && !room.CurrentReservations.Any(res => 
+                    (StartTime >= res.StartTime && StartTime <= res.EndTime)
                     ||
-                    StartTime <= res.EndTime
-                    ||
-                    res.StartTime <= EndTime
-                    ||
-                    EndTime <= res.EndTime
+                    (EndTime >= res.StartTime && EndTime <= res.EndTime)
                     )//Only returns true if there are no conflicts
 
                  );
