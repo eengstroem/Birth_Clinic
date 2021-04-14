@@ -7,16 +7,8 @@ namespace Library.Factory.Clinicians
 {
     class ClinicianFactory
     {
-        public enum ClinicianType
-        {
-            DOCTOR,
-            MIDWIFE,
-            NURSE,
-            HEALTH_ASSISTANT,
-            SECRETARY
-        }
 
-        public Clinician CreateFakeClinician()
+        public Clinician CreateFakeClinician(ClinicianType type)
         {
 
             var faker = new Faker("en");
@@ -24,7 +16,7 @@ namespace Library.Factory.Clinicians
             {
                 FirstName = faker.Name.FirstName(),
                 LastName = faker.Name.LastName(),
-                Role = (Models.Clinicians.ClinicianType)faker.PickRandom<ClinicianType>()
+                Role = type
             };
             return o;
         }

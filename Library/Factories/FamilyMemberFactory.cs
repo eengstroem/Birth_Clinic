@@ -5,15 +5,8 @@ namespace Library.Factory.FamilyMembers
 {
     class FamilyMemberFactory
     {
-        public enum FamilyMemberType
-        {
-            FATHER,
-            MOTHER,
-            CHILD,
-            RELATIVE
-        }
-
-        public FamilyMember CreateFakeFamilyMember()
+        
+        public FamilyMember CreateFakeFamilyMember(FamilyMemberType type)
         {
 
             var faker = new Faker("en");
@@ -21,7 +14,7 @@ namespace Library.Factory.FamilyMembers
             {
                 FirstName = faker.Name.FirstName(),
                 LastName = faker.Name.LastName(),
-                MemberType = (Models.FamilyMembers.FamilyMemberType)faker.PickRandom<FamilyMemberType>()
+                MemberType = type
             };
             return o;
         }
