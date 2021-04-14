@@ -6,6 +6,8 @@ using Library.Models.Births;
 using Library.Models.Clinicians;
 using Library.Models.Reservations;
 using Library.Models.Rooms;
+using Library.Factory.FamilyMembers;
+using Library.Models.FamilyMembers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -79,6 +81,7 @@ namespace Library.DataGenerator
                 var B = BirthFactory.CreateFakeBirth();
                 Reservation[] reservations;
                 List<Clinician> Clinicians;
+                List<FamilyMember> relatives;
                 if (!CreateReservations(Context, B, out reservations))
                 {
                     continue;
@@ -91,6 +94,13 @@ namespace Library.DataGenerator
                 Context.AddRange(reservations);
 
                 B.AssociatedClinicians.Concat(Clinicians);
+                B.Mother = AddMother();
+                Random rand = new();
+                if (rand.Next(1,10) > 1)
+                {
+                    B.Father = AddFather();
+                }
+                B.Relatives = AddRelatives();
 
                 Context.Births.Add(B);
             }
@@ -271,6 +281,34 @@ namespace Library.DataGenerator
             Clinicians.Add(FoundClinicians.ElementAt(Rand.Next(0, FoundClinicians.Count())));
 
             return true;
+        }
+
+        public static FamilyMember AddMother()
+        {
+            return FamilyMemberFactory.CreateFakeFamilyMember(FamilyMemberType.MOTHER);
+        }
+
+        public static FamilyMember AddFather()
+        {
+            return FamilyMemberFactory.CreateFakeFamilyMember(FamilyMemberType.FATHER);
+        }
+
+        public static List<FamilyMember> AddRelatives()
+        {
+            Random rand = new();
+            List<FamilyMember> FamilyMembers = new();
+            for (int i = rand.Next(1,10); i == 0; i--)
+            {
+                FamilyMembers.Add(FamilyMemberFactory.CreateFakeFamilyMember(FamilyMemberType.RELATIVE));
+            }
+            return FamilyMembers;
+        }
+
+        public static List<FamilyMember> AddChildrenToBorn()
+        {
+            Random rand = new();
+            int wait = rand.Next(1, 100);
+            
         }
     }
 }
