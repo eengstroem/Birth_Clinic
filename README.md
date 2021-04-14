@@ -25,7 +25,7 @@ If this happens, delete the database and run the program again.
 
 We have made a simple command that drops the entire database for you.
 Use this command to do it quick-and-easy:  
-<code>USE master;  
+<code>USE master;
 GO  
 ALTER DATABASE myDb  
 SET SINGLE_USER  
