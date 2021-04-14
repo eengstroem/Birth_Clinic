@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace Library.DataGenerator
 {
-    class DataGenerator
+    public class DataGenerator
     {
 
         public static void GenerateStaticData(BirthClinicDbContext Context)

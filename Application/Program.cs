@@ -1,5 +1,11 @@
-﻿using Library.Display;
+﻿using Library.Context;
+using Library.DataGenerator;
+using Library.Display;
 using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Sqlite;
+using Microsoft.Extensions.DependencyInjection;
+using System.IO;
 
 namespace Application
 {
@@ -7,6 +13,15 @@ namespace Application
     {
         static void Main(string[] args)
         {
+            ServiceCollection Services = new();
+
+            ConfigureServices(Services);
+
+            ServiceProvider ServiceProvider = Services.BuildServiceProvider();
+            var Context = ServiceProvider.GetService<BirthClinicDbContext>();
+            DataGenerator.GenerateStaticData(Context);
+            DataGenerator.GenerateData(Context);
+
             Display Disp = new();
 
             while (true)
@@ -67,6 +82,15 @@ namespace Application
             }
 
 
-            }
+        }
+
+        public static void ConfigureServices(ServiceCollection SC)
+        {
+            SC.AddDbContext<BirthClinicDbContext>(options =>
+            {
+                var dataSource = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "DebtBook.db");
+                options.UseSqlite($"Data Source={dataSource};");
+            });
+        }
     }
 }
