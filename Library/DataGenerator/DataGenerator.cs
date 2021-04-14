@@ -79,20 +79,18 @@ namespace Library.DataGenerator
             for (int i = 0; i < 136; i++)
             {
                 var B = BirthFactory.CreateFakeBirth();
-                Reservation[] reservations;
-                List<Clinician> Clinicians;
-                if (!CreateReservations(Context, B, out reservations))
+                if (!CreateReservations(Context, B, out List<Reservation> reservations))
                 {
                     continue;
                 }
-                if (!AddClinicians(Context, B, out Clinicians))
+                if (!AddClinicians(Context, B, out List<Clinician> Clinicians))
                 {
                     continue;
                 }
 
                 Context.AddRange(reservations);
 
-                B.AssociatedClinicians.Concat(Clinicians);
+                B.AssociatedClinicians = Clinicians;
                 B.Mother = AddMother();
                 Random rand = new();
                 if (rand.Next(1,10) > 1)
@@ -168,7 +166,7 @@ namespace Library.DataGenerator
 
         }
 
-        public static bool CreateReservations(BirthClinicDbContext Context, Birth Birth, out Reservation[] reservations)
+        public static bool CreateReservations(BirthClinicDbContext Context, Birth Birth, out List<Reservation> reservations)
         {
             var MaternityStartTime = Birth.BirthDate.AddHours(-132);
             var MaternityEndTime = Birth.BirthDate.AddHours(-12);
@@ -216,7 +214,7 @@ namespace Library.DataGenerator
                     AssociatedBirth = Birth
                 };
 
-                reservations = new Reservation[] { MaternityRes, BirthRes, RestRes };
+                reservations = new List<Reservation> { MaternityRes, BirthRes, RestRes };
                 return true;
             }
         }
