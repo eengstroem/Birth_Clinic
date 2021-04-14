@@ -1,20 +1,32 @@
 ﻿using Library.Models.Births;
 using Library.Models.Clinicians;
 using System.Collections.Generic;
+using Bogus;
 
 namespace Library.Factory.Clinicians
 {
     class ClinicianFactory
     {
-        public Clinician CreateClinician(string FirstName, string LastName, ICollection<Birth> AssignedBirths, ClinicianType Role)
+        public enum ClinicianType
         {
-            Clinician c = new();
-            c.FirstName = FirstName;
-            c.LastName = LastName;
-            c.AssignedBirths = AssignedBirths;
-            c.Role = Role;
+            DOCTOR,
+            MIDWIFE,
+            NURSE,
+            HEALTH_ASSISTANT,
+            SECRETARY
+        }
 
-            return c;
+        public Clinician CreateFakeClinician()
+        {
+
+            var faker = new Faker("en");
+            var o = new Clinician()
+            {
+                FirstName = faker.Name.FirstName(),
+                LastName = faker.Name.LastName(),
+                Role = (Models.Clinicians.ClinicianType)faker.PickRandom<ClinicianType>()
+            };
+            return o;
         }
     }
 }
