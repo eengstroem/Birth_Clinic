@@ -1,4 +1,21 @@
 # Birth_Clinic
 
 
-The project is gaming
+The project is a C# Console Application, using a class library that holds all the models required for the project. 
+Made for the DAB course by Jakob, Marius and Emil. 
+
+## Overview of the project ## 
+
+The solution has 2 projects, the Application and Library. They hold all the classes, methods and context, to provide the end result. 
+
+
+Below, a quick guide will walk you through set-up and interaction with the solution.
+
+## How to use the solution ##
+1. Clone the project using git clone <project-.path.git> OR open it after downloading the zip
+2. Open the solution in visual studio. 
+3. Replace the string at the bottom of "Program.cs", with your connection string. 
+4. Run the application, remember to set "Application" as Start-up project.
+5. Using the ASCII-menu, navigate through to the desired point of information.
+6. Press "esc" to exit from sub-menu to the front-menu.
+7. Look through the data, until done.
