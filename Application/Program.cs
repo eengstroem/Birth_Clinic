@@ -24,6 +24,7 @@ namespace Application
 
             Display Disp = new();
 
+
             while (true)
             {
                 
@@ -32,44 +33,28 @@ namespace Application
                 switch (Input)
                 {
                     case 'A':
-                        Console.WriteLine("case 1");
-
+                        Disp.Case1(Context);
                         Disp.Reset();
                         
 
 
                         break;
                     case 'B':
-                        Console.WriteLine("case 2");
+                        Disp.Case2(Context);
                         Disp.Reset();
                         break;
                     case 'C':
-                        Console.WriteLine("case 3");
+                        Disp.Case3(Context);
                         Disp.Reset();
                         break;
                     case 'D':
-                        Console.WriteLine("case 4");
+                        Disp.Case4(Context);
                         Disp.Reset();
                         break;
                     case 'E':
 
-                        Console.WriteLine("1: Given a birth is planned: Show the rooms reserved the birth");
-                        Console.WriteLine("2: Given a birth is planned: Show the clinicians assigned the birth");
-                        int Choice = Disp.ReadAndParseInt32FromDisplay();
-                        switch (Choice)
-                        {
-                            case 1:
-                                Console.WriteLine("case 5");
-                                Disp.Reset();
-                                break;
-                            case 2:
-                                Console.WriteLine("case 6");
-                                Disp.Reset();
-                                break;
-                            default:
-                                Disp.ForceReset("Unacceptable input");
-                                break;
-                        }
+                        Disp.Case5(Context);
+                        Disp.Reset();
                         break;
                     case 'M':
                         Disp.marioFunny();
@@ -88,8 +73,7 @@ namespace Application
         {
             SC.AddDbContext<BirthClinicDbContext>(options =>
             {
-                var dataSource = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "DebtBook.db");
-                options.UseSqlServer("server=localhost,1433; User Id=sa; Password=password_123; database=myDb; trusted_connection=false;");
+                options.UseSqlServer("server=[::1],1433; User Id=SA; Password=password_123; database=myDb; trusted_connection=false;");
         });
         }
     }

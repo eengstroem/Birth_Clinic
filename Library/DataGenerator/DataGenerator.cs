@@ -77,18 +77,17 @@ namespace Library.DataGenerator
         public static void GenerateData(BirthClinicDbContext Context)
         {
             //Adding 136 Births since there are 5000 births per year (13.6 per day), and we want to simulate 10 days of fake data.
-            for (int i = 0; i < 136; i++)
+            for (int i = 0; i < 40; i++)
             {
-                Console.WriteLine(i);
                 var B = BirthFactory.CreateFakeBirth();
                 if (!CreateReservations(Context, B, out List<Reservation> reservations))
                 {
-                    Console.WriteLine("REE SCHEDULING CONFLICT ON RESERVATION");
+                    Console.WriteLine("We are out of rooms");
                     continue;
                 }
                 if (!AddClinicians(Context, B, out List<Clinician> Clinicians))
                 {
-                    Console.WriteLine("REE SCHEDULING CONFLICT ON CLINICIAN");
+                    
                     continue;
                 }
 
@@ -106,23 +105,30 @@ namespace Library.DataGenerator
                 B.ChildrenToBeBorn = AddChildrenToBorn();
 
                 Context.Births.Add(B);
+                Context.SaveChanges();
             }
-            Context.SaveChanges();
         }
 
         //TODO switch to single instead of where
         public static Room FindAvailableRooms(DbSet<Room> Rooms, DateTime StartTime, DateTime EndTime, RoomType Type)
         {
-            return Rooms.First(room =>
+            try
+            {
+                return Rooms.First(room =>
 
-                    //search for conflicts
-                    room.RoomType == Type && !room.CurrentReservations.Any(res =>
-                    (StartTime >= res.StartTime && StartTime <= res.EndTime)
-                    ||
-                    (EndTime >= res.StartTime && EndTime <= res.EndTime)
-                    )//Only returns true if there are no conflicts
+                        //search for conflicts
+                        room.RoomType == Type && !room.CurrentReservations.Any(res =>
+                        (StartTime >= res.StartTime && StartTime <= res.EndTime)
+                        ||
+                        (EndTime >= res.StartTime && EndTime <= res.EndTime)
+                        )//Only returns true if there are no conflicts
 
-                 );
+                     );
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public static IEnumerable<Clinician> FindAvailableClinicians(DbSet<Clinician> clinicians, Birth Birth, ClinicianType Role)
@@ -134,11 +140,11 @@ namespace Library.DataGenerator
             {
                 case ClinicianType.DOCTOR:
                     RequiredDelta = 12;
-                    AllowedOccurences = 0;
+                    AllowedOccurences = 4;
                     break;
                 case ClinicianType.HEALTH_ASSISTANT:
                     RequiredDelta = 4;
-                    AllowedOccurences = 0;
+                    AllowedOccurences = 2;
 
                     break;
                 case ClinicianType.MIDWIFE:
@@ -153,7 +159,7 @@ namespace Library.DataGenerator
                     break;
                 case ClinicianType.SECRETARY:
                     // Secretary only has to check in the birth, so she is freed up immediately, but still associated.
-                    AllowedOccurences = 1;
+                    AllowedOccurences = 50000;
 
                     break;
             }
@@ -161,8 +167,8 @@ namespace Library.DataGenerator
             return clinicians.Where(clinician =>
                     //search for conflicts
                     clinician.Role == Role &&
-                    clinician.AssignedBirths.AsEnumerable().Where(b =>
-                     EF.Functions.DateDiffMinute(b.BirthDate, Birth.BirthDate) >= RequiredDelta * 60).AsEnumerable().Count() <= AllowedOccurences
+                    clinician.AssignedBirths.Where(b =>
+                     EF.Functions.DateDiffMinute(b.BirthDate, Birth.BirthDate) >= RequiredDelta * 60).Count() <= AllowedOccurences
                  );
 
 
@@ -232,6 +238,7 @@ namespace Library.DataGenerator
             FoundClinicians = FindAvailableClinicians(Context.Clinicians, Birth, ClinicianType.DOCTOR);
             if (!FoundClinicians.Any())
             {
+                Console.WriteLine("We are out of Doctors");
                 return false;
             }
             Clinicians.Add(FoundClinicians.ElementAt(Rand.Next(0, FoundClinicians.Count())));
@@ -241,6 +248,7 @@ namespace Library.DataGenerator
             FoundClinicians = FindAvailableClinicians(Context.Clinicians, Birth, ClinicianType.MIDWIFE);
             if (!FoundClinicians.Any())
             {
+                Console.WriteLine("We are out of Midwives");
                 return false;
             }
             Clinicians.Add(FoundClinicians.ElementAt(Rand.Next(0, FoundClinicians.Count())));
@@ -251,23 +259,19 @@ namespace Library.DataGenerator
 
             if (FoundClinicians.Count() < 2)
             {
+                Console.WriteLine("We are out of Nurses");
                 return false;
             }
-            int randresult = Rand.Next(0, FoundClinicians.Count());
 
-            if (randresult == FoundClinicians.Count())
-            {
-                randresult--;
-            }
-
-            Clinicians.Add(FoundClinicians.ElementAt(randresult));
-            Clinicians.Add(FoundClinicians.ElementAt(randresult++));
+            Clinicians.Add(FoundClinicians.ElementAt(0));
+            Clinicians.Add(FoundClinicians.ElementAt(1));
 
 
             // Finds available Assistant and inserts two random available Assistant into output List.
             FoundClinicians = FindAvailableClinicians(Context.Clinicians, Birth, ClinicianType.HEALTH_ASSISTANT);
             if (!FoundClinicians.Any())
             {
+                Console.WriteLine("We are out of Health Assistants");
                 return false;
             }
             Clinicians.Add(FoundClinicians.ElementAt(Rand.Next(0, FoundClinicians.Count())));
@@ -277,6 +281,7 @@ namespace Library.DataGenerator
             FoundClinicians = FindAvailableClinicians(Context.Clinicians, Birth, ClinicianType.SECRETARY);
             if (!FoundClinicians.Any())
             {
+                Console.WriteLine("We are out of Secretary");
                 return false;
             }
             Clinicians.Add(FoundClinicians.ElementAt(Rand.Next(0, FoundClinicians.Count())));
@@ -298,7 +303,7 @@ namespace Library.DataGenerator
         {
             Random rand = new();
             List<Relative> relatives = new();
-            for (int i = rand.Next(1, 10); i == 0; i--)
+            for (int i = rand.Next(1, 5); i > 0; i--)
             {
                 relatives.Add((Relative)CreateFakeFamilyMember(FamilyMemberType.RELATIVE));
             }
