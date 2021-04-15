@@ -19,9 +19,9 @@ namespace Library.DataGenerator
     public class DataGenerator
     {
 
+        private static readonly int HowManyBirthsToGenerate = 30;
         public static void GenerateStaticData(BirthClinicDbContext Context)
         {
-
             //create midwives
             for (int i = 0; i < 10; i++)
             {
@@ -77,7 +77,7 @@ namespace Library.DataGenerator
         public static void GenerateData(BirthClinicDbContext Context)
         {
             //Adding 136 Births since there are 5000 births per year (13.6 per day), and we want to simulate 10 days of fake data.
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < HowManyBirthsToGenerate; i++)
             {
                 var B = BirthFactory.CreateFakeBirth();
                 if (!CreateReservations(Context, B, out List<Reservation> reservations))
@@ -87,7 +87,7 @@ namespace Library.DataGenerator
                 }
                 if (!AddClinicians(Context, B, out List<Clinician> Clinicians))
                 {
-                    
+
                     continue;
                 }
 
@@ -366,7 +366,7 @@ namespace Library.DataGenerator
         }
         public static bool CreateReservation(BirthClinicDbContext Context, RoomType Type)
         {
-            
+
             List<Birth> BirthList = Context.Births.ToList();
 
             Console.WriteLine("Please choose a Birth to add this reservation to.");
@@ -388,7 +388,7 @@ namespace Library.DataGenerator
 
                 }
             }
-            var B = BirthList.ElementAt(Choice-1);
+            var B = BirthList.ElementAt(Choice - 1);
             var StartTime = B.BirthDate;
             var EndTime = B.BirthDate;
             switch (Type)
