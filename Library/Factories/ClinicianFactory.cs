@@ -1,5 +1,7 @@
 ﻿using Bogus;
+using Library.Models.Births;
 using Library.Models.Clinicians;
+using System.Collections.Generic;
 
 namespace Library.Factory.Clinicians
 {
