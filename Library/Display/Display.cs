@@ -1,16 +1,16 @@
 ﻿using Library.Context;
-using System;
-using System.Runtime.InteropServices;
-using System.Threading;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Collections.Generic;
 using Library.Models.Births;
+using Library.Models.FamilyMembers;
 using Library.Models.Reservations;
 using Library.Models.Rooms;
 using Library.Models.FamilyMembers;
 using Library.Utils;
 using Library.Repository;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace Library.Display
 {
@@ -71,6 +71,8 @@ namespace Library.Display
             Console.WriteLine("C: Show the current ongoing births with information about the birth, parents, clinicians associated and the birth room.");
             Console.WriteLine("D: Show the maternity rooms and the rest rooms in use with the parent(s) and child(ren) using the room.");
             Console.WriteLine("E: Specific information about a specific planned birth");
+            Console.WriteLine("F: Creation Section");
+            Console.WriteLine("H: Removal Section");
         }
 
         public void Reset()
@@ -90,6 +92,8 @@ namespace Library.Display
             Console.WriteLine("C: Show the current ongoing births with information about the birth, parents, clinicians associated and the birth room.");
             Console.WriteLine("D: Show the maternity rooms and the rest rooms in use with the parent(s) and child(ren) using the room.");
             Console.WriteLine("E: Specific information about a specific planned birth");
+            Console.WriteLine("F: Creation Section");
+            Console.WriteLine("H: Removal Section");
 
         }
 
@@ -105,6 +109,8 @@ namespace Library.Display
             Console.WriteLine("C: Show the current ongoing births with information about the birth, parents, clinicians associated and the birth room.");
             Console.WriteLine("D: Show the maternity rooms and the rest rooms in use with the parent(s) and child(ren) using the room.");
             Console.WriteLine("E: Specific information about a specific planned birth");
+            Console.WriteLine("F: Creation Section");
+            Console.WriteLine("H: Removal Section");
 
         }
         public static void ClearCurrentConsoleLine()
@@ -115,7 +121,7 @@ namespace Library.Display
             Console.SetCursorPosition(0, currentLineCursor);
         }
 
-        public int ReadAndParseInt32FromDisplay()
+        public static int ReadAndParseInt32FromDisplay()
         {
             string line = "";
             int Choice = -1;
@@ -153,7 +159,7 @@ namespace Library.Display
             }
             return line;
         }
-        public void marioFunny()
+        public void MarioFunny()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
@@ -180,12 +186,14 @@ namespace Library.Display
         }
         public void Case1(BirthClinicDbContext context)
         {
+            Console.Clear();
             DateTime FilterDate = DateTime.Now.AddDays(3);
             List<Birth> BirthList = context.Births.Where(c => c.BirthDate < FilterDate).ToList();
-
-
-            Console.WriteLine("Please enter a number between 1 and " + BirthList.Count() + ", to view the specific birth's details.");
+            
+            
+            Console.WriteLine("Please enter a number between 1 and " + BirthList.Count + ", to view the specific birth's details.");
             int Choice = ReadAndParseInt32FromDisplay();
+            Console.Clear();
             Birth B = BirthList.ElementAt(Choice - 1);
             foreach (var c in B.ChildrenToBeBorn)
             {
@@ -217,7 +225,7 @@ namespace Library.Display
             foreach (var r in ReservationList)
             {
                 string room = r.ReservedRoom.RoomType.ToString();
-                room = room.Substring(0, 1).ToUpper() + room.Substring(1, room.Length - 1).ToLower();
+                room = room.Substring(0, 1).ToUpper() + room[1..].ToLower();
                 Console.WriteLine("Room #" + r.ReservedRoom.RoomId + " - " + room + " room.");
                 Console.WriteLine("Between: " + r.StartTime.ToLongDateString() + " " + r.StartTime.ToShortTimeString() + " and " + r.EndTime.ToLongDateString() + " " + r.EndTime.ToShortTimeString());
             }
@@ -236,6 +244,7 @@ namespace Library.Display
 
         public void Case3(BirthClinicDbContext context)
         {
+            Console.Clear();
             DateTime FilterDate = DateTime.Now;
             List<Reservation> ReservationList = context.Reservations.Where(r =>
             r.ReservedRoom.RoomType == RoomType.BIRTH
@@ -281,6 +290,7 @@ namespace Library.Display
         }
         public void Case4(BirthClinicDbContext context)
         {
+            Console.Clear();
             DateTime FilterDate = DateTime.Now;
             List<Reservation> ReservationList = context.Reservations.Where(r =>
             (r.ReservedRoom.RoomType == RoomType.MATERNITY || r.ReservedRoom.RoomType == RoomType.REST)
@@ -297,7 +307,7 @@ namespace Library.Display
             {
                 var B = r.AssociatedBirth;
                 string room = r.ReservedRoom.RoomType.ToString();
-                room = room.Substring(0, 1).ToUpper() + room.Substring(1, room.Length - 1).ToLower();
+                room = $"{room.Substring(0, 1).ToUpper()}{room[1..].ToLower()}";
 
                 Console.WriteLine("In " + room + " room " + r.ReservedRoom.RoomId + ".");
                 Console.WriteLine("Mother: " + B.Mother.FirstName + " " + B.Mother.LastName);
@@ -316,6 +326,7 @@ namespace Library.Display
         }
         public void Case5(BirthClinicDbContext context)
         {
+            Console.Clear();
             List<Birth> BirthList = context.Births.ToList();
             int i = 0;
             foreach (var b in BirthList)
@@ -327,6 +338,7 @@ namespace Library.Display
             Console.WriteLine("Please enter a number according to the Journal you wish to read.");
             int Choice = ReadAndParseInt32FromDisplay();
             Birth B = BirthList.ElementAt(Choice - 1);
+            Console.Clear();
 
             foreach (var c in B.ChildrenToBeBorn)
             {
@@ -358,17 +370,55 @@ namespace Library.Display
             foreach (var r in ReservationList)
             {
                 string room = r.ReservedRoom.RoomType.ToString();
-                room = room.Substring(0, 1).ToUpper() + room.Substring(1, room.Length - 1).ToLower();
+                room = room.Substring(0, 1).ToUpper() + room[1..].ToLower();
                 Console.WriteLine("Room #" + r.ReservedRoom.RoomId + " - " + room + " room.");
                 Console.WriteLine("Between: " + r.StartTime.ToLongDateString() + " " + r.StartTime.ToShortTimeString() + " and " + r.EndTime.ToLongDateString() + " " + r.EndTime.ToShortTimeString());
             }
         }
+
+        public void EndBirth(BirthClinicDbContext context)
+        {
+            Console.Clear();
+            List<Birth> BirthList = context.Births.Where(b =>b.IsEnded == false).ToList();
+            int i = 0;
+            foreach (var b in BirthList)
+            {
+                i++;
+                Console.WriteLine("Journal for " + b.Mother.FirstName + "'s Planned birth - #" + i);
+            }
+            Console.WriteLine("Please choose one of the following active births to end.");
+            int Choice = ReadAndParseInt32FromDisplay();
+            Birth B = BirthList.ElementAt(Choice - 1);
+            B.IsEnded = true;
+            context.SaveChanges();
+            ForceReset("Birth has been ended.");
+        }
+
+        public void RemoveReservation(BirthClinicDbContext context)
+        {
+            Console.Clear();
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Console.SetBufferSize(500, 1000);
+            }
+            List<Reservation> ReservationList = context.Reservations.OrderBy(r => r.ReservedRoom.RoomId).ToList();
+            int i = 0;
+            foreach (var r in ReservationList)
+            {
+                i++; 
+                string room = r.ReservedRoom.RoomType.ToString();
+                room = $"{room.Substring(0, 1).ToUpper()}{room[1..].ToLower()}";
+
+                Console.WriteLine("Reservation for " +room + " room - Reservation nr. " + i);
+                Console.WriteLine("From " + r.StartTime.ToLongDateString() +" "+ r.StartTime.ToLongTimeString() + " Until " +r.EndTime.ToLongDateString() + " " + r.EndTime.ToLongTimeString());
+                Console.WriteLine();
+            }
+            Console.WriteLine("Please choose one of the following active Reservations to removed.");
+            int Choice = ReadAndParseInt32FromDisplay();
+            Reservation R = ReservationList.ElementAt(Choice - 1);
+            context.Remove(R);
+            context.SaveChanges();
+            ForceReset("Reservation has been removed.");
+        }
     }
 }
-
-/*Console.WriteLine("Hello, please type the corresponding letter to choose one of the following options:");
- *Console.WriteLine("A: Show planned births for the coming three days");
- *Console.WriteLine("B: Show clinicians, birth rooms, maternity rooms and rest rooms available at the clinic for the next five days");
- *Console.WriteLine("C: Show the current ongoing births with information about the birth, parents, clinicians associated and the birth room.");
- *Console.WriteLine("D: Show the maternity rooms and the rest rooms in use with the parent(s) and child(ren) using the room.");
- *Console.WriteLine("E: Specific information about a specific planned birth");*/

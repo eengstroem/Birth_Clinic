@@ -27,6 +27,8 @@ namespace Library.Models.Births
         public Mother Mother { get; set; }
         public int MotherForeignKey { get; set; }
 
+        [Required]
+        public bool IsEnded { get; set; }
 
         //optional
         public Father Father { get; set; }
@@ -34,6 +36,7 @@ namespace Library.Models.Births
 
         //optional
         public ICollection<Relative> Relatives { get; set; }
+
 
     }
 }

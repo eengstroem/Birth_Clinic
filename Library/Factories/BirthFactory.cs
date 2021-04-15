@@ -1,9 +1,6 @@
 ﻿using Bogus;
 using Library.Models.Births;
-using Library.Models.Clinicians;
-using Library.Models.FamilyMembers;
 using System;
-using System.Collections.Generic;
 
 namespace Library.Factory.Births
 {

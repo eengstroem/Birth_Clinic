@@ -1,8 +1,4 @@
-﻿using Bogus;
-using Library.Models.Clinicians;
-using Library.Models.Reservations;
-using Library.Models.Rooms;
-using System.Collections.Generic;
+﻿using Library.Models.Rooms;
 
 namespace Library.Factory.Rooms
 {

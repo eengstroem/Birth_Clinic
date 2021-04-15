@@ -1,10 +1,8 @@
-﻿using Library.Models.Births;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Library.Models.FamilyMembers
 {
-
 
     public abstract class FamilyMember
     {

@@ -1,13 +1,10 @@
-﻿using Library.Models.Births;
+﻿using Bogus;
 using Library.Models.Clinicians;
-using System.Collections.Generic;
-using Bogus;
 
 namespace Library.Factory.Clinicians
 {
     class ClinicianFactory
     {
-
         public static Clinician CreateFakeClinician(ClinicianType type)
         {
 
