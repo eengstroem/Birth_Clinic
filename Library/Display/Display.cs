@@ -188,7 +188,7 @@ namespace Library.Display
         {
             Console.Clear();
             DateTime FilterDate = DateTime.Now.AddDays(3);
-            List<Birth> BirthList = context.Births.Where(c => c.BirthDate < FilterDate).ToList();
+            List<Birth> BirthList = context.Births.Where(c => c.BirthDate < FilterDate && c.IsEnded == false).ToList();
             
             
             Console.WriteLine("Please enter a number between 1 and " + BirthList.Count + ", to view the specific birth's details.");
@@ -237,8 +237,25 @@ namespace Library.Display
             {
                 Console.SetBufferSize(500, 1000);
             }
-            ReservationRepository.PrintAvailableRoomsInNext5Days(context);
-            ReservationRepository.PrintAvailableCliniciansInNext5Days(context);
+            Console.WriteLine("Please select which data to print.");
+            Console.WriteLine("R: Rooms\nC: Clinicians");
+            char Choice = ReadSingleCharFromDisplay();
+            switch (Choice)
+            {
+                case 'R':
+                    Console.Clear();
+                    ReservationRepository.PrintAvailableRoomsInNext5Days(context);
+                    return;
+                    break;
+                case 'C':
+                    Console.Clear();
+                    ReservationRepository.PrintAvailableCliniciansInNext5Days(context);
+                    return;
+                    break;
+                default:
+                    ForceReset("Unacceptable Input");
+                    break;
+            }
 
         }
 
@@ -327,7 +344,7 @@ namespace Library.Display
         public void Case5(BirthClinicDbContext context)
         {
             Console.Clear();
-            List<Birth> BirthList = context.Births.ToList();
+            List<Birth> BirthList = context.Births.Where(c=>c.IsEnded == false).ToList();
             int i = 0;
             foreach (var b in BirthList)
             {
