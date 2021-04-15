@@ -122,7 +122,6 @@ namespace Library.DataGenerator
                         ||
                         (EndTime >= res.StartTime && EndTime <= res.EndTime)
                         )//Only returns true if there are no conflicts
-
                      );
             }
             catch
