@@ -1,5 +1,4 @@
-﻿using Library.Models.Clinicians;
-using Library.Models.Reservations;
+﻿using Library.Models.Reservations;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -25,8 +24,6 @@ namespace Library.Models.Rooms
 
         //optional
         public ICollection<Reservation> CurrentReservations { get; set; }
-
-
 
     }
 }

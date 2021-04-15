@@ -1,14 +1,13 @@
 ﻿using Library.Context;
-using System;
-using System.Runtime.InteropServices;
-using System.Threading;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Collections.Generic;
 using Library.Models.Births;
+using Library.Models.FamilyMembers;
 using Library.Models.Reservations;
 using Library.Models.Rooms;
-using Library.Models.FamilyMembers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace Library.Display
 {
@@ -417,6 +416,5 @@ namespace Library.Display
             context.SaveChanges();
             ForceReset("Reservation has been removed.");
         }
-
     }
 }

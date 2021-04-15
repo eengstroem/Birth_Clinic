@@ -1,12 +1,10 @@
 ﻿using Library.Context;
 using Library.DataGenerator;
 using Library.Display;
-using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.SqlServer;
-using Microsoft.Extensions.DependencyInjection;
-using System.IO;
 using Library.Models.Rooms;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Application
 {
